@@ -33,6 +33,12 @@
   --color-priority-sedang: #8a7a3c;
   --color-priority-tinggi: #a35a2a;
   --color-priority-ekstrem: #8c2b22;
+
+  /*
+   * Tinggi baris atas. Dipakai blok brand di sidebar DAN header halaman,
+   * supaya garis pembatas di bawah keduanya sejajar di semua lebar layar.
+   */
+  --tinggi-kepala: 88px;
 }
 
 /* Label kecil UPPERCASE ber-letter-spacing, mis. "MONITORING / OVERVIEW", "FORMAT: WAV". */

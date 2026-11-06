@@ -61,7 +61,7 @@ export function AppShell({
           drawerBuka ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        <div className="flex items-start justify-between gap-3 border-b border-line-strong p-5">
+        <div className="flex h-[var(--tinggi-kepala)] shrink-0 items-center justify-between gap-3 border-b border-line-strong px-5">
           <Brand />
           <button
             type="button"
@@ -132,7 +132,7 @@ export function AppShell({
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-line-strong px-4 py-4 sm:gap-6 sm:px-8 sm:py-5">
+        <header className="flex h-[var(--tinggi-kepala)] shrink-0 items-center gap-3 border-b border-line-strong px-4 sm:gap-6 sm:px-8">
           <button
             type="button"
             onClick={() => setDrawerBuka(true)}
