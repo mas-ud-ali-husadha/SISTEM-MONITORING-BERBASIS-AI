@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+
+/*
+ * Design token, diambil dari pixel mockup/landing.png, login.png, dashboard.png.
+ * Paletnya monochrome dengan sedikit kehangatan (kanal B lebih rendah dari R/G).
+ * Ganti di sini saja — jangan hardcode hex di komponen.
+ */
+@theme {
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Courier Prime', 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* permukaan */
+  --color-paper: #f6f6f4;
+  --color-surface: #f8f8f6;
+  --color-surface-sunken: #eeeeeb;
+  --color-sidebar: #e6e6e3;
+
+  /* teks dan garis */
+  --color-ink: #202020;
+  --color-ink-soft: #383838;
+  --color-ink-muted: #555555;
+  --color-ink-faint: #a3a3a1;
+  --color-line: #d5d5d2;
+  --color-line-strong: #202020;
+
+  /*
+   * Tingkat prioritas (FR-05). Definisi sedang/tinggi/ekstrem masih TBD di SRS,
+   * warnanya sengaja diredam agar tetap kohesif dengan UI monochrome.
+   * Ubah hue di sini, bukan di komponen.
+   */
+  --color-priority-rendah: #6f7b6a;
+  --color-priority-sedang: #8a7a3c;
+  --color-priority-tinggi: #a35a2a;
+  --color-priority-ekstrem: #8c2b22;
+}
+
+/* Label kecil UPPERCASE ber-letter-spacing, mis. "MONITORING / OVERVIEW", "FORMAT: WAV". */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* Grid latar seperti strip fitur di landing.png. */
+@utility grid-paper {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* Fokus keyboard harus terlihat: UI-nya banyak border tipis, outline default mudah tenggelam. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
