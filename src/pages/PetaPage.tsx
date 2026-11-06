@@ -26,7 +26,7 @@ export default function PetaPage() {
       keterangan="Sebaran indikasi dalam skenario simulasi akademik."
       aksi={<Badge kelas="border-ink uppercase">data simulasi</Badge>}
     >
-      <div className="h-[520px] w-full overflow-hidden border border-line-strong">
+      <div className="h-[46vh] max-h-[520px] min-h-[320px] w-full overflow-hidden border border-line-strong sm:h-[520px]">
         <MapContainer center={[awal.lat, awal.lng]} zoom={13} className="h-full w-full" scrollWheelZoom={false}>
           <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {bertitik.map((r) => (

@@ -21,7 +21,7 @@ export default function RiwayatPage() {
       judul="Riwayat Deteksi"
       keterangan="Semua hasil analisis tersimpan dan dapat ditinjau sesuai hak akses."
     >
-      <div className="mb-6 grid gap-4 md:grid-cols-4">
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         <input
           value={filter.q ?? ''}
           onChange={(e) => setFilter((f) => ({ ...f, q: e.target.value }))}

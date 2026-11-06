@@ -43,7 +43,7 @@ export default function DashboardPage() {
         ) : null}
       </Panel>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3 lg:gap-6">
         <StatCard
           label="Total Sampel"
           nilai={String(ringkasan.data?.totalSampel ?? '—')}

@@ -12,10 +12,10 @@ export function StatCard({
   kelas?: string;
 }) {
   return (
-    <div className={cx('border border-line-strong bg-surface p-6', kelas)}>
+    <div className={cx('border border-line-strong bg-surface p-4 sm:p-6', kelas)}>
       <p className="eyebrow">{label}</p>
-      <p className="mt-6 font-display text-[34px] leading-none tabular-nums">{nilai}</p>
-      <p className="mt-6 text-[13px] text-ink-muted">{keterangan}</p>
+      <p className="mt-4 font-display text-[30px] leading-none tabular-nums sm:mt-6 sm:text-[34px]">{nilai}</p>
+      <p className="mt-3 text-[13px] text-ink-muted sm:mt-6">{keterangan}</p>
     </div>
   );
 }

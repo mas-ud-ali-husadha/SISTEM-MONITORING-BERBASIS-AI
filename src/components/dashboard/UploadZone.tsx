@@ -38,7 +38,7 @@ export function UploadZone({
         ambilDari(e.dataTransfer.files);
       }}
       className={cx(
-        'grid-paper border border-dashed border-line-strong px-6 py-12 text-center transition-colors',
+        'grid-paper border border-dashed border-line-strong px-4 py-8 text-center transition-colors sm:px-6 sm:py-12',
         seret && 'border-ink bg-surface-sunken'
       )}
     >

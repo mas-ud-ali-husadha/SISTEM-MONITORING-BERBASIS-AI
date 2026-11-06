@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import type { ReactNode } from 'react';
 import { cx } from '../../lib/cx';
@@ -26,26 +27,62 @@ export function AppShell({
 }) {
   const navigate = useNavigate();
   const keluar = useKeluar();
+  const [drawerBuka, setDrawerBuka] = useState(false);
+
+  // Drawer terbuka = latar terkunci, Escape menutup.
+  useEffect(() => {
+    if (!drawerBuka) return;
+    const saatKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setDrawerBuka(false);
+    };
+    document.addEventListener('keydown', saatKeydown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', saatKeydown);
+      document.body.style.overflow = '';
+    };
+  }, [drawerBuka]);
 
   return (
     <div className="flex min-h-screen bg-paper">
-      <aside className="flex w-[236px] shrink-0 flex-col border-r border-line-strong bg-sidebar">
-        <div className="border-b border-line-strong p-5">
+      {drawerBuka ? (
+        <button
+          type="button"
+          aria-label="Tutup menu"
+          onClick={() => setDrawerBuka(false)}
+          className="fixed inset-0 z-30 cursor-default bg-ink/40 lg:hidden"
+        />
+      ) : null}
+
+      <aside
+        className={cx(
+          'fixed inset-y-0 left-0 z-40 flex w-[264px] max-w-[85vw] shrink-0 flex-col border-r border-line-strong bg-sidebar transition-transform duration-200',
+          'lg:static lg:w-[236px] lg:max-w-none lg:translate-x-0 lg:transition-none',
+          drawerBuka ? 'translate-x-0' : '-translate-x-full'
+        )}
+      >
+        <div className="flex items-start justify-between gap-3 border-b border-line-strong p-5">
           <Brand />
+          <button
+            type="button"
+            onClick={() => setDrawerBuka(false)}
+            aria-label="Tutup menu"
+            className="grid size-9 shrink-0 place-items-center border border-line-strong hover:bg-surface lg:hidden"
+          >
+            <span aria-hidden>✕</span>
+          </button>
         </div>
 
-        <nav className="flex-1 px-5 py-6">
+        <nav className="flex-1 overflow-y-auto px-5 py-6">
           <p className="eyebrow mb-5">Menu Utama</p>
           <ul className="space-y-1">
             {MENU_UTAMA.map((item) => {
-              const bolehAkses = !item.aksi || boleh(sesi.peran, item.aksi);
-              if (!bolehAkses) {
+              // FR-11: menu yang tidak boleh dibuka perannya tetap tampil,
+              // tapi ditandai "admin only" supaya hak aksesnya jelas.
+              if (item.aksi && !boleh(sesi.peran, item.aksi)) {
                 return (
                   <li key={item.ke}>
-                    <div
-                      className="flex items-center gap-3 px-3 py-3 text-ink-faint"
-                      title="Hanya untuk administrator"
-                    >
+                    <div className="flex items-center gap-3 px-3 py-3 text-ink-faint" title="Hanya untuk administrator">
                       <span className="font-mono text-[11px]">{item.nomor}</span>
                       <span className="flex-1 text-[14px]">{item.label}</span>
                       <Badge kelas="border-line text-[9px]">admin only</Badge>
@@ -57,6 +94,8 @@ export function AppShell({
                 <li key={item.ke}>
                   <NavLink
                     to={item.ke}
+                    // Di layar kecil drawer menutup setelah item dipilih.
+                    onClick={() => setDrawerBuka(false)}
                     className={({ isActive }) =>
                       cx(
                         'flex items-center gap-3 border px-3 py-3 text-[14px] transition-colors',
@@ -93,27 +132,39 @@ export function AppShell({
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-6 border-b border-line-strong px-8 py-5">
-          <div>
-            <p className="eyebrow">{eyebrow}</p>
-            <h1 className="mt-2 font-display text-[30px] leading-none">{judul}</h1>
+        <header className="flex items-center gap-3 border-b border-line-strong px-4 py-4 sm:gap-6 sm:px-8 sm:py-5">
+          <button
+            type="button"
+            onClick={() => setDrawerBuka(true)}
+            aria-label="Buka menu"
+            className="grid size-10 shrink-0 place-items-center border border-line-strong bg-surface hover:bg-surface-sunken lg:hidden"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+              <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+          </button>
+
+          <div className="min-w-0 flex-1">
+            <p className="eyebrow truncate">{eyebrow}</p>
+            <h1 className="mt-1.5 truncate font-display text-[22px] leading-none sm:mt-2 sm:text-[30px]">{judul}</h1>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center border border-line-strong bg-surface font-mono text-xs">
+
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <span className="grid size-9 place-items-center border border-line-strong bg-surface font-mono text-xs sm:size-10">
               {inisial(sesi.username)}
             </span>
-            <span className="leading-tight">
+            <span className="hidden leading-tight md:block">
               <span className="block text-[14px] font-medium">{peranLabel[sesi.peran]}</span>
               <span className="block font-mono text-[12px] text-ink-muted">{sesi.username}@monitor.ht</span>
             </span>
-            <Badge kelas="ml-1 uppercase">{sesi.peran}</Badge>
+            <Badge kelas="hidden uppercase sm:inline-flex">{sesi.peran}</Badge>
           </div>
         </header>
 
-        <main className="flex-1 space-y-8 overflow-auto p-8">{children}</main>
+        <main className="flex-1 space-y-5 p-4 sm:space-y-6 sm:p-6 lg:p-8">{children}</main>
 
-        <footer className="border-t border-line-strong bg-surface-sunken px-8 py-3">
-          <span className="font-mono text-[11px] text-ink-muted">
+        <footer className="border-t border-line-strong bg-surface-sunken px-4 py-3 sm:px-8">
+          <span className="font-mono text-[10px] leading-relaxed text-ink-muted sm:text-[11px]">
             Prototipe akademik. Tidak terhubung ke jaringan radio operasional.
           </span>
         </footer>
